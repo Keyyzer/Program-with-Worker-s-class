@@ -1,0 +1,89 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <time.h>
+#include <windows.h>
+#include <cstring>
+
+
+using namespace std; 
+
+	class Worker
+	{
+	private:
+		std::string name;
+		double Experience = 0; //Experience is measured in years
+		double hourly_wage = 0;
+		double work_hours = 0;
+		double salary = 0;
+		double premy = 0;
+		double premy_percent = 0;
+
+		double calcSalary(double work_hours, double hourly_wage)
+		{
+			salary = work_hours * hourly_wage;
+			return salary;
+		}
+
+		double calcPremy(double Experience)
+		{
+			if (Experience <= 1) {
+				premy_percent = 0;
+			}
+			else if (Experience > 1 && Experience < 3) {
+				premy_percent = 0.03;
+			}
+			else if (Experience > 3 && Experience < 5) {
+				premy_percent = 0.08;
+			}
+			else if (Experience > 5) {
+				premy_percent = 0.15;
+			}
+			premy = premy_percent * salary;
+			return premy;
+		}
+
+	public:
+
+		void ent_info()
+		{
+			cout << "Enter worker's name: ";
+			cin >> name;
+			cout << "Enter worker's Experience: ";
+			cin >> Experience;
+			cout << "Enter worker's hourly wage: ";
+			cin >> hourly_wage;
+			cout << "Enter work's hours :";
+			cin >> work_hours;
+		}
+		void info_show()
+		{
+			cout << "Worker's name is " << name << endl;
+			cout << "Worker's experience is equal to " << Experience << endl;
+			cout << "Worker's hourly wage is " << hourly_wage << endl;
+			cout << name << " worked out " << work_hours <<" hours" << endl;
+			calcSalary(work_hours, hourly_wage);
+			cout << name << "'s salary is " << salary <<" rubles'" << endl;
+			calcPremy(Experience);
+			cout << "Premy is " << premy <<" rubles'" << endl;
+		}
+		void TextFile() {
+			ofstream worker;
+			worker.open("Workers.txt", ios_base::app); 
+			worker << name << endl; 
+			worker << "Experience - " << Experience << endl; 
+			worker << "Hourly wage - " << hourly_wage << endl;
+			worker << name << " has worked " << work_hours << " hour(s)" << endl; 
+			worker << "Salary = " << salary << endl; 
+			worker << "Premy = " << premy <<"\n" << endl; 
+			worker.close();
+			cout << "Information about " << name << "was written in the file 'Workers.txt'" << endl;
+		}
+	};
+
+	int main() {
+		Worker one; 
+		one.ent_info();
+		one.info_show();
+		one.TextFile();
+	}
